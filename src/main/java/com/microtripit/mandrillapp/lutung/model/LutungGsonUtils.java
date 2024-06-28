@@ -18,6 +18,8 @@ import com.microtripit.mandrillapp.lutung.view.MandrillMessage;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
@@ -44,10 +46,30 @@ public final class LutungGsonUtils {
 				.setDateFormat(dateFormatStr)
 				.registerTypeAdapter(Date.class, new DateDeserializer())
 				.registerTypeAdapter(Map.class, new MapSerializer())
-                .registerTypeAdapter(MandrillMessage.Recipient.Type.class,
-                		new RecipientTypeSerializer());
+				.registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeSerializer())
+				.registerTypeAdapter(MandrillMessage.Recipient.Type.class,
+						new RecipientTypeSerializer());
 	}
 
+	// https://howtodoinjava.com/gson/gson-typeadapter-for-inaccessibleobjectexception/
+	public static final class ZonedDateTimeSerializer implements JsonSerializer<ZonedDateTime>, JsonDeserializer<ZonedDateTime> {
+
+		private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d::MMM::uuuu HH::mm::ss z");
+
+		@Override
+		public JsonElement serialize(ZonedDateTime zonedDateTime, Type srcType,
+									 JsonSerializationContext context) {
+
+			return new JsonPrimitive(formatter.format(zonedDateTime));
+		}
+
+		@Override
+		public ZonedDateTime deserialize(JsonElement json, Type typeOfT,
+										 JsonDeserializationContext context) throws JsonParseException {
+
+			return ZonedDateTime.parse(json.getAsString(), formatter);
+		}
+	}
 	public static final class DateDeserializer
 			implements JsonDeserializer<Date>, JsonSerializer<Date> {
 
@@ -60,7 +82,7 @@ public final class LutungGsonUtils {
 		public Date deserialize(final JsonElement json,
 								final Type typeOfT,
 								final JsonDeserializationContext context)
-						throws JsonParseException {
+				throws JsonParseException {
 
 			if(!json.isJsonPrimitive()) {
 				throw new JsonParseException("Unexpected type for date: " + json);
@@ -104,13 +126,13 @@ public final class LutungGsonUtils {
 
 	public static final class RecipientTypeSerializer
 			implements JsonDeserializer<MandrillMessage.Recipient.Type>,
-				JsonSerializer<MandrillMessage.Recipient.Type> {
+			JsonSerializer<MandrillMessage.Recipient.Type> {
 
 		public MandrillMessage.Recipient.Type deserialize(
 				final JsonElement json,
 				final Type typeOfT,
 				final JsonDeserializationContext context)
-						throws JsonParseException {
+				throws JsonParseException {
 
 			if(!json.isJsonPrimitive()) {
 				throw new JsonParseException(

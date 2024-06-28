@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.dnovitski</groupId>
+    <groupId>io.github.barre3</groupId>
     <artifactId>lutung</artifactId>
     <version>0.0.13</version>
     <name>lutung</name>
@@ -31,12 +31,16 @@
             <id>dnovitski</id>
             <name>dnovitski</name>
         </developer>
+        <developer>
+            <id>barre3</id>
+            <name>barre3</name>
+        </developer>
     </developers>
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
 
     <properties>
         <java-version>1.8</java-version>
@@ -45,9 +49,9 @@
 
     <!-- Scm release info -->
     <scm>
-        <connection>scm:git:git://github.com/dnovitski/lutung.git</connection>
-        <developerConnection>scm:git:git@github.com:dnovitski/lutung.git</developerConnection>
-        <url>http://github.com/dnovitski/lutung</url>
+        <connection>scm:git:git://github.com/barre3/lutung.git</connection>
+        <developerConnection>scm:git:git@github.com:barre3/lutung.git</developerConnection>
+        <url>http://github.com/barre3/lutung</url>
     </scm>
 
     <build>
@@ -90,58 +94,65 @@
         </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <id>release</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                        <version>3.0.1</version>
-                        <configuration>
-                            <arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.1.0</version>
-                        <configuration>
-                            <passphrase>${gpg.passphrase}</passphrase>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+    <!--    <profiles>-->
+    <!--        <profile>-->
+    <!--            <id>release</id>-->
+    <!--            <activation>-->
+    <!--                <property>-->
+    <!--                    <name>performRelease</name>-->
+    <!--                    <value>true</value>-->
+    <!--                </property>-->
+    <!--            </activation>-->
+    <!--            <build>-->
+    <!--                <plugins>-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-release-plugin</artifactId>-->
+    <!--                        <version>3.0.1</version>-->
+    <!--                        <configuration>-->
+    <!--                            <arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>-->
+    <!--                        </configuration>-->
+    <!--                    </plugin>-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-gpg-plugin</artifactId>-->
+    <!--                        <version>3.1.0</version>-->
+    <!--                        <configuration>-->
+    <!--                            <passphrase>${gpg.passphrase}</passphrase>-->
+    <!--                        </configuration>-->
+    <!--                        <executions>-->
+    <!--                            <execution>-->
+    <!--                                <id>sign-artifacts</id>-->
+    <!--                                <phase>verify</phase>-->
+    <!--                                <goals>-->
+    <!--                                    <goal>sign</goal>-->
+    <!--                                </goals>-->
+    <!--                            </execution>-->
+    <!--                        </executions>-->
+    <!--                    </plugin>-->
+    <!--                </plugins>-->
+    <!--            </build>-->
+    <!--        </profile>-->
+    <!--    </profiles>-->
 
+    <!--    <distributionManagement>-->
+    <!--        &lt;!&ndash; Sonatype repo info &ndash;&gt;-->
+    <!--        <snapshotRepository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <name>Sonatype Nexus snapshot repository</name>-->
+    <!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
+    <!--        </snapshotRepository>-->
+    <!--        <repository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <name>Sonatype Nexus release repository</name>-->
+    <!--            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+    <!--        </repository>-->
+    <!--    </distributionManagement>-->
     <distributionManagement>
-        <!-- Sonatype repo info -->
-        <snapshotRepository>
-            <id>ossrh</id>
-            <name>Sonatype Nexus snapshot repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <name>Sonatype Nexus release repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>github</id>
+            <name>GitHub barre3 Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/barre3/lutung</url>
         </repository>
     </distributionManagement>
 
@@ -163,8 +174,8 @@
 
         <dependency>
             <groupId>commons-io</groupId>
-		    <artifactId>commons-io</artifactId>
-		    <version>2.13.0</version>
+            <artifactId>commons-io</artifactId>
+            <version>2.13.0</version>
         </dependency>
 
         <dependency>
